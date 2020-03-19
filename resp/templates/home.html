@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block section %}
+    <form method="post" style="text-align: center; color:rgb(0, 0, 0)">
+        {% csrf_token %}
+        {{ form.as_p}}
+        <button>Enviar</button>
+    </form>
+    <hr color="white">
+    <h4 style="margin-left: 50px;"><u>{{ url }}</u></h4>
+    <h4 style="margin-left: 50px;">{{ rjson }}</h4>
+{% endblock %}
