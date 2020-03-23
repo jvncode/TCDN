@@ -4,7 +4,7 @@ from resp.forms import Inputs
 import requests
 import time
 import json
-import socket
+import webbrowser
 
 
 class ResponseView(View):
@@ -19,23 +19,29 @@ class ResponseView(View):
     def post(self, request):
         form = Inputs(request.POST)
         if form.is_valid:
-            before = time.time()
-            r = requests.get(form.data['dominio'], auth=('user', 'pass'))
-            responseTime = time.time() - before
-            rdict = dict(status_code=r.status_code, time='{:.2f} seg'.format(responseTime))
-            rjson = json.dumps(rdict)
+            url = request.POST['dominio']
+            destination = url
             if form.data['ip'] !='':
-                IP = form.data['ip']
-                PORT = 80
-                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                s.connect((IP,PORT))
-                url = 'http://localhost/?dominio={}&ip={}'.format(form.data['dominio'], form.data['ip'])
+                ip = 'http://'+request.POST['ip']
+                destination = ip
+            before = time.time()
+            r = requests.get(destination)
+            responseTime = round((time.time() - before) * 1000)
+            webbrowser.open_new_tab(destination)
+            if r.history:
+                print("Request was redirected")
+                for resp in r.history:
+                    print(resp.status_code, resp.url)
+                    print("Final destination:\n{} {}".format(r.status_code, r.url))
+                rdict = dict(status_code=r.history[0].status_code, time='{}ms'.format(responseTime))
             else:
-                url = 'http://localhost/?dominio={}'.format(form.data['dominio'])
+                print("Request was not redirected")
+                rdict = dict(status_code=r.status_code, time='{}ms'.format(responseTime))
+        rjson = json.dumps(rdict)
         context = {
-            'form': form,
             'rjson': rjson,
-            'url': url
+            'destination': r.url,
+            'get': True
         }
         return render(request, 'home.html', context)
 
