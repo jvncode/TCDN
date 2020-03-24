@@ -10,11 +10,6 @@
 source <nombre_entorno_virtual>/bin/activate
 ```
 
-* **Instalar Django**
-```
-pip install django
-```
-
 * **Instalar "requirements":**
 ```
 pip install -r requirements.txt
