@@ -8,14 +8,14 @@ import webbrowser
 
 
 class ResponseView(View):
-    
+
     def get(self, request):
         form = Inputs()
         context = {
             'form': form,
         }
         return render(request, 'home.html', context)
-    
+
     def post(self, request):
         form = Inputs(request.POST)
         if form.is_valid:

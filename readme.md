@@ -10,6 +10,11 @@
 source <nombre_entorno_virtual>/bin/activate
 ```
 
+* **Instalar Django**
+```
+pip install django
+```
+
 * **Instalar "requirements":**
 ```
 pip install -r requirements.txt
@@ -17,6 +22,11 @@ pip install -r requirements.txt
 * **Lanzar aplicación**
 ```
 python manage.py runserver
+```
+
+* **Abrir con el navegador el LocalHost para entrar en la Home**
+```
+http://127.0.0.1:8000
 ```
 
 ## Construido con 🛠️
